@@ -1,0 +1,9 @@
+{
+  "short_name": "Handy's",
+  "name": "Handy's PWA",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1B9CFC",
+  "icons": []
+}
