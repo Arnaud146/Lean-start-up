@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#1B9CFC" />
+  <meta name="description" content="Handy's - Votre compagnon fitness adapté pour tous" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Handy's" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="msapplication-TileColor" content="#1B9CFC" />
+  <meta name="msapplication-tap-highlight" content="no" />
+  
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  <link rel="icon" href="%PUBLIC_URL%/logo.webp" />
+  <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo.webp" />
+  <link rel="shortcut icon" href="%PUBLIC_URL%/logo.webp" />
+  
+  <title>Handy's - Votre compagnon fitness</title>
+</head>
+<body>
+  <noscript>Veuillez activer JavaScript pour utiliser l'application.</noscript>
+  
+  <!-- Skip to main content link for screen readers -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded z-50">
+    Aller au contenu principal
+  </a>
+  
+  <!-- Live region for announcements -->
+  <div id="announcements" aria-live="polite" aria-atomic="true" class="sr-only"></div>
+  
+  <div id="root"></div>
+</body>
+</html>
