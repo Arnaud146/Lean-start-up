@@ -8,7 +8,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyBGtnLUjAIZrm8JAS9Gd5mht-oMXYrH85I",
   authDomain: "handy-s-6961d.firebaseapp.com",
   projectId: "handy-s-6961d",
-  storageBucket: "handy-s-6961d.firebasestorage.app",
+  storageBucket: "storageBucket: handy-s-6961d.appspot.com",
   messagingSenderId: "760769633537",
   appId: "1:760769633537:web:4bce1c1903e9c22291cf00"
 };
