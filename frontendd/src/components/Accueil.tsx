@@ -8,7 +8,7 @@ const WelcomePage = () => {
   return (
     <div className="min-h-screen bg-indigo-700 flex flex-col items-center justify-between py-10 px-4">
       <div className="flex-1 flex flex-col items-center justify-center">
-        <img  alt="Handy's Logo" className="h-32 w-auto mb-8" />
+        <img  src="./assets/logo.webp" alt="Handy's Logo" className="h-32 w-auto mb-8" />
         <h1 className="text-white text-3xl font-bold mb-2 text-center">
           Bienvenue sur Handy&apos;s !
         </h1>

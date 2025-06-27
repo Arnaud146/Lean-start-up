@@ -34,6 +34,15 @@ const ExercisesPage = () => {
     fetchExercises();
   }, []);
 
+  // Fonction pour filtrer les exercices par catégorie
+  const getExercisesByCategory = (categories) => {
+    return exercises.filter(exercise => 
+      categories.some(category => 
+        exercise.category?.toLowerCase().includes(category.toLowerCase())
+      )
+    );
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -65,43 +74,31 @@ const ExercisesPage = () => {
     <div className="min-h-screen bg-gray-50">
       {/* VERSION MOBILE */}
       <div className="block lg:hidden">
-        {/* Header mobile avec recherche */}
-        <div className="bg-white px-4 py-6">
-          <div className="relative mb-6">
-            <input
-              type="text"
-              placeholder="Rechercher un exercice"
-              className="w-full px-4 py-3 pr-10 bg-gray-100 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <svg className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </div>
-        </div>
+        {/* Sections mobiles séparées */}
+        <div className="px-4 py-6 space-y-6">
+          {/* Section violette - Haut du corps */}
+          <MobileSection 
+            title="Découvre nos exercices pour le haut du corps !"
+            color="purple"
+            exercises={getExercisesByCategory(["Pectoraux", "Haut du corps"])}
+            navigate={navigate}
+          />
 
-        {/* Section violette mobile */}
-        <div className="mx-4 mb-6">
-          <div className="bg-gradient-to-r from-purple-600 to-purple-700 rounded-2xl p-6 text-white relative">
-            <h2 className="text-xl font-bold mb-4">Découvre nos exercices<br />pour le haut du corps !</h2>
-            
-            {/* Icône d'édition */}
-            <div className="absolute top-4 right-4">
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-              </svg>
-            </div>
+          {/* Section orange - Bas du corps */}
+          <MobileSection 
+            title="Découvre aussi nos exercices pour le bas du corps !"
+            color="orange"
+            exercises={getExercisesByCategory(["Jambes", "Bas du corps"])}
+            navigate={navigate}
+          />
 
-            {/* Liste des exercices dans la section violette */}
-            <div className="space-y-3">
-              {exercises.map((exercise) => (
-                <MobileExerciseCard 
-                  key={exercise.id} 
-                  exercise={exercise}
-                  onClick={() => navigate(`/exercises/${exercise.id}`)}
-                />
-              ))}
-            </div>
-          </div>
+          {/* Section violette - Retour au calme */}
+          <MobileSection 
+            title="N'oublie pas ton retour au calme !"
+            color="purple"
+            exercises={getExercisesByCategory(["Retour au calme", "Relaxation", "Étirement"])}
+            navigate={navigate}
+          />
         </div>
 
         {/* Espacement pour navigation */}
@@ -116,9 +113,11 @@ const ExercisesPage = () => {
             <div className="flex items-center justify-between">
               {/* Logo */}
               <div className="flex items-center space-x-8">
-                <div className="text-2xl font-bold text-purple-600">H</div>
+                <div className="text-2xl font-bold text-purple-600">
+                  <img src="/logo.webp" alt="Logo Handy's" className="w-8 h-8" />
+                </div>
                 <nav className="flex space-x-8">
-                  <button onClick={() => navigate('/')} className="text-gray-600 hover:text-purple-600">Accueil</button>
+                  <button onClick={() => navigate('/home')} className="text-gray-600 hover:text-purple-600">Accueil</button>
                   <button className="text-purple-600 font-medium">Exercices</button>
                   <button onClick={() => navigate('/articles')} className="text-gray-600 hover:text-purple-600">Articles</button>
                 </nav>
@@ -126,18 +125,8 @@ const ExercisesPage = () => {
 
               {/* Recherche et profil */}
               <div className="flex items-center space-x-4">
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="Rechercher un exercice"
-                    className="px-4 py-2 pr-10 bg-gray-100 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 w-64"
-                  />
-                  <svg className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                </div>
                 <div className="flex items-center space-x-2 bg-gray-100 rounded-full px-3 py-2">
-                  <span className="text-sm">54€</span>
+                  <span className="text-sm"></span>
                   <div className="w-6 h-6 bg-gray-300 rounded-full"></div>
                 </div>
               </div>
@@ -153,7 +142,7 @@ const ExercisesPage = () => {
             <DesktopSection 
               title="Découvre nos exercices pour le haut du corps !"
               color="purple"
-              exercises={exercises.filter(ex => ex.category === "Pectoraux" || ex.category === "Haut du corps")}
+              exercises={getExercisesByCategory(["Pectoraux", "Haut du corps"])}
               navigate={navigate}
             />
 
@@ -161,15 +150,15 @@ const ExercisesPage = () => {
             <DesktopSection 
               title="Découvre aussi nos exercices pour le bas du corps !"
               color="orange"
-              exercises={exercises.filter(ex => ex.category === "Jambes" || ex.category === "Bas du corps")}
+              exercises={getExercisesByCategory(["Jambes", "Bas du corps"])}
               navigate={navigate}
             />
 
-            {/* Section violette - Bien-être */}
+            {/* Section violette - Retour au calme */}
             <DesktopSection 
               title="N'oublie pas ton retour au calme !"
               color="purple"
-              exercises={exercises.filter(ex => ex.category === "Relaxation" || ex.category === "Étirement")}
+              exercises={getExercisesByCategory(["Retour au calme", "Relaxation", "Étirement"])}
               navigate={navigate}
             />
           </div>
@@ -180,9 +169,21 @@ const ExercisesPage = () => {
       <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
         <div className="px-4 py-3">
           <div className="flex justify-around">
-            <NavItem icon="🏠" label="Accueil" onClick={() => navigate('/')} />
-            <NavItem icon="💪" label="Exercices" active />
-            <NavItem icon="📰" label="Articles" onClick={() => navigate('/articles')} />
+            <NavItem 
+              icon="/home-icon.png" 
+              label="Accueil" 
+              onClick={() => navigate('/home')} 
+            />
+            <NavItem 
+              icon="/exercise-icon.png" 
+              label="Exercices" 
+              active 
+            />
+            <NavItem 
+              icon="/article-icon.png" 
+              label="Articles" 
+              onClick={() => navigate('/articles')} 
+            />
           </div>
         </div>
       </div>
@@ -190,56 +191,99 @@ const ExercisesPage = () => {
   );
 };
 
-// Composant exercice mobile (dans section violette)
+// Composant section mobile
+const MobileSection = ({ title, color, exercises, navigate }) => {
+  const bgColor = color === 'purple' 
+    ? 'bg-gradient-to-r from-purple-600 to-purple-700' 
+    : 'bg-gradient-to-r from-orange-500 to-orange-600';
+
+  return (
+    <div className={`${bgColor} rounded-2xl p-6 text-white relative`}>
+      <h2 className="text-xl font-bold mb-4">{title}</h2>
+      
+      {/* Icône d'édition */}
+      <div className="absolute top-4 right-4">
+        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+        </svg>
+      </div>
+
+      {/* Liste des exercices */}
+      <div className="space-y-3">
+        {exercises.map((exercise) => (
+          <MobileExerciseCard 
+            key={exercise.id} 
+            exercise={exercise}
+            onClick={() => navigate(`/exercises/${exercise.id}`)}
+          />
+        ))}
+      </div>
+
+      {/* Message si aucun exercice */}
+      {exercises.length === 0 && (
+        <div className="text-center py-4">
+          <p className="text-white text-opacity-80 text-sm">Aucun exercice disponible dans cette catégorie pour le moment.</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// Composant exercice mobile (dans section violette) - VERSION CORRIGÉE
 const MobileExerciseCard = ({ exercise, onClick }) => {
   return (
     <div 
-      className="bg-white bg-opacity-95 rounded-2xl p-4 flex items-center gap-4 cursor-pointer hover:bg-opacity-100 transition-all"
+      className="bg-white bg-opacity-95 rounded-2xl p-4 cursor-pointer hover:bg-opacity-100 transition-all"
       onClick={onClick}
     >
-      {/* Image */}
-      <div className="w-16 h-16 bg-gray-100 rounded-xl flex items-center justify-center flex-shrink-0">
-        {exercise.imageUrl && (
-          <img 
-            src={`/${exercise.imageUrl}`}
-            alt={exercise.title}
-            className="w-12 h-12 object-contain"
-            onError={(e) => {
-              e.target.src = '/default-exercise.jpg';
-            }}
-          />
-        )}
-      </div>
+      <div className="flex items-center justify-between">
+        {/* Partie gauche : Image + Contenu */}
+        <div className="flex items-center gap-4 flex-1 min-w-0 pr-4">
+          {/* Image */}
+          <div className="w-16 h-16 bg-gray-100 rounded-xl flex items-center justify-center flex-shrink-0">
+            {exercise.imageUrl && (
+              <img 
+                src={`/${exercise.imageUrl}`}
+                alt={exercise.title}
+                className="w-12 h-12 object-contain"
+                onError={(e) => {
+                  e.target.src = '/default-exercise.jpg';
+                }}
+              />
+            )}
+          </div>
 
-      {/* Contenu */}
-      <div className="flex-1">
-        <h3 className="font-semibold text-gray-900 text-sm mb-1">
-          {exercise.title}
-        </h3>
-        <p className="text-gray-600 text-xs mb-3">
-          {exercise.category || "Haut du corps"}
-        </p>
-        
-        {/* Tags */}
-        <div className="flex gap-2">
-          {exercise.difficulty && (
-            <span className="px-3 py-1 border border-orange-400 text-orange-600 text-xs font-medium rounded-full">
-              {exercise.difficulty}
-            </span>
-          )}
-          {exercise.duration && (
-            <span className="px-3 py-1 border border-orange-400 text-orange-600 text-xs font-medium rounded-full">
-              {exercise.duration} min
-            </span>
-          )}
+          {/* Contenu */}
+          <div className="flex-1 min-w-0">
+            <h3 className="font-semibold text-gray-900 text-sm mb-1 truncate">
+              {exercise.title}
+            </h3>
+            <p className="text-gray-600 text-xs mb-3">
+              {exercise.category || "Exercice"}
+            </p>
+            
+            {/* Tags */}
+            <div className="flex gap-2 flex-wrap">
+              {exercise.difficulty && (
+                <span className="px-3 py-1 border border-orange-400 text-orange-600 text-xs font-medium rounded-full">
+                  {exercise.difficulty}
+                </span>
+              )}
+              {exercise.duration && (
+                <span className="px-3 py-1 border border-orange-400 text-orange-600 text-xs font-medium rounded-full">
+                  {exercise.duration} min
+                </span>
+              )}
+            </div>
+          </div>
         </div>
-      </div>
 
-      {/* Flèche */}
-      <div className="text-orange-400">
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-        </svg>
+        {/* Flèche - TOUJOURS À DROITE */}
+        <div className="text-orange-400 flex-shrink-0">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </div>
       </div>
     </div>
   );
@@ -272,6 +316,13 @@ const DesktopSection = ({ title, color, exercises, navigate }) => {
           />
         ))}
       </div>
+
+      {/* Message si aucun exercice */}
+      {exercises.length === 0 && (
+        <div className="text-center py-8">
+          <p className="text-white text-opacity-80">Aucun exercice disponible dans cette catégorie pour le moment.</p>
+        </div>
+      )}
     </div>
   );
 };
@@ -302,7 +353,7 @@ const DesktopExerciseCard = ({ exercise, onClick }) => {
         {exercise.title}
       </h3>
       <p className="text-gray-600 text-xs mb-3">
-        {exercise.category || "Haut du corps"}
+        {exercise.category || "Exercice"}
       </p>
       
       {/* Tags */}
@@ -337,7 +388,18 @@ const NavItem = ({ icon, label, active = false, onClick }) => (
     className={`flex flex-col items-center py-2 px-3 cursor-pointer ${active ? 'text-orange-500' : 'text-gray-500'}`}
     onClick={onClick}
   >
-    <span className="text-lg mb-1">{icon}</span>
+    {typeof icon === 'string' && icon.includes('.png') ? (
+      <img 
+        src={icon} 
+        alt={label}
+        className="w-6 h-6 mb-1"
+        onError={(e) => {
+          e.target.src = '/default-nav-icon.png';
+        }}
+      />
+    ) : (
+      <span className="text-lg mb-1">{icon}</span>
+    )}
     <span className="text-xs font-medium">{label}</span>
   </div>
 );

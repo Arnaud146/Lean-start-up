@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
-import { useAuth } from '../hooks/useAuth.ts';
-
 
 const ArticlesPage = () => {
   const navigate = useNavigate();
@@ -76,9 +74,11 @@ const ArticlesPage = () => {
             <div className="flex items-center justify-between">
               {/* Logo */}
               <div className="flex items-center space-x-8">
-                <div className="text-2xl font-bold text-purple-600">H</div>
+                <div className="text-2xl font-bold text-purple-600">
+                  <img src="/logo.webp" alt="Logo Handy's" className="w-8 h-8" />
+                </div>
                 <nav className="flex space-x-8">
-                  <button onClick={() => navigate('/')} className="text-gray-600 hover:text-purple-600">Accueil</button>
+                  <button onClick={() => navigate('/home')} className="text-gray-600 hover:text-purple-600">Accueil</button>
                   <button onClick={() => navigate('/exercises')} className="text-gray-600 hover:text-purple-600">Exercices</button>
                   <button className="text-purple-600 font-medium">Articles</button>
                 </nav>
@@ -106,69 +106,20 @@ const ArticlesPage = () => {
         </div>
 
         {/* Section principale avec titre */}
-        <div className="max-w-6xl mx-auto px-6 py-8">
+        <div className="max-w-7xl mx-auto px-6 py-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">
-            Découvrez des actualités et conseils pour un sport inclusif et adapté !
+            Découvre des actualités et conseils pour un sport inclusif adapté !
           </h2>
           
-          {/* Grille d'articles 3x2 */}
+          {/* Grille d'articles - tous les articles */}
           <div className="grid grid-cols-3 gap-6 mb-8">
-            {articles.slice(0, 6).map((article) => (
+            {articles.map((article) => (
               <DesktopArticleCard 
                 key={article.id} 
                 article={article} 
                 onClick={() => navigate(`/articles/${article.id}`)}
               />
             ))}
-          </div>
-
-          {/* Autres articles */}
-          <div className="grid grid-cols-3 gap-6 mb-8">
-            {articles.slice(6, 9).map((article) => (
-              <DesktopArticleCard 
-                key={article.id} 
-                article={article} 
-                onClick={() => navigate(`/articles/${article.id}`)}
-              />
-            ))}
-          </div>
-
-          {/* Dernière rangée - 2 articles */}
-          <div className="grid grid-cols-2 gap-6 max-w-4xl">
-            {articles.slice(9, 11).map((article) => (
-              <DesktopArticleCard 
-                key={article.id} 
-                article={article} 
-                onClick={() => navigate(`/articles/${article.id}`)}
-                isLarge={true}
-              />
-            ))}
-          </div>
-
-          {/* Section finale */}
-          <div className="grid grid-cols-2 gap-6 mt-8 max-w-4xl">
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Bien-être global et témoignages</h3>
-              {articles.slice(11, 12).map((article) => (
-                <DesktopArticleCard 
-                  key={article.id} 
-                  article={article} 
-                  onClick={() => navigate(`/articles/${article.id}`)}
-                  isLarge={true}
-                />
-              ))}
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Programmes et exercices adaptés</h3>
-              {articles.slice(12, 13).map((article) => (
-                <DesktopArticleCard 
-                  key={article.id} 
-                  article={article} 
-                  onClick={() => navigate(`/articles/${article.id}`)}
-                  isLarge={true}
-                />
-              ))}
-            </div>
           </div>
         </div>
       </div>
@@ -180,7 +131,7 @@ const ArticlesPage = () => {
           <div className="px-4 py-4">
             <h1 className="text-2xl font-bold text-gray-900">Articles</h1>
             <p className="text-gray-600 text-sm mt-1">
-              Découvrez des actualités et conseils pour un sport inclusif et adapté !
+              Découvre des actualités et conseils pour un sport inclusif adapté !
             </p>
           </div>
         </div>
@@ -200,10 +151,26 @@ const ArticlesPage = () => {
         <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
           <div className="px-4 py-3">
             <div className="flex justify-around">
-              <NavItem icon="🏠" label="Accueil" onClick={() => navigate('/')} />
-              <NavItem icon="💪" label="Exercices" onClick={() => navigate('/exercises')} />
-              <NavItem icon="📰" label="Articles" active />
-              <NavItem icon="👤" label="Profil" onClick={() => navigate('/profile')} />
+              <NavItem 
+                icon="/home-icon.png" 
+                label="Accueil" 
+                onClick={() => navigate('/home')} 
+              />
+              <NavItem 
+                icon="/exercise-icon.png" 
+                label="Exercices" 
+                onClick={() => navigate('/exercises')} 
+              />
+              <NavItem 
+                icon="/article-icon.png" 
+                label="Articles" 
+                active 
+              />
+              <NavItem 
+                icon="👤" 
+                label="Profil" 
+                onClick={() => navigate('/profile')} 
+              />
             </div>
           </div>
         </div>
@@ -234,70 +201,36 @@ const DesktopArticleCard = ({ article, onClick, isLarge = false }) => {
 
   return (
     <div 
-      className={`bg-white rounded-xl shadow-sm overflow-hidden cursor-pointer transition-transform hover:scale-105 border border-gray-100 ${isLarge ? 'h-80' : 'h-72'}`}
+      className={`bg-purple-200 rounded-3xl overflow-hidden cursor-pointer transition-transform hover:scale-105 ${isLarge ? 'h-80' : 'h-72'}`}
       onClick={onClick}
     >
       {/* Image */}
-      <div className={`relative ${isLarge ? 'h-40' : 'h-32'}`}>
+      <div className={`relative ${isLarge ? 'h-40' : 'h-32'} flex items-center justify-center`}>
         <img 
           src={article.imageUrl || 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'} 
           alt={article.title}
-          className="w-full h-full object-cover"
+          className="max-w-full max-h-full object-contain rounded-lg"
         />
-        {article.category && (
-          <span className="absolute top-3 left-3 bg-blue-600 text-white px-2 py-1 rounded-full text-xs font-medium">
-            {article.category}
-          </span>
-        )}
       </div>
       
       {/* Contenu */}
       <div className="p-4 flex flex-col justify-between flex-1">
         <div>
-          <div className="flex items-center text-xs text-gray-500 mb-2">
-            <span>{formatDate(article.createdAt)}</span>
-            {article.author && (
-              <>
-                <span className="mx-1">•</span>
-                <span>Par {article.author}</span>
-              </>
-            )}
-            {article.readTime && (
-              <>
-                <span className="mx-1">•</span>
-                <span>{article.readTime} min de lecture</span>
-              </>
-            )}
-          </div>
-          
           <h3 className={`font-bold text-gray-900 mb-2 line-clamp-2 ${isLarge ? 'text-base' : 'text-sm'}`}>
             {article.title}
           </h3>
           
           {article.excerpt && (
-            <p className={`text-gray-600 mb-3 line-clamp-2 ${isLarge ? 'text-sm' : 'text-xs'}`}>
+            <p className={`text-gray-700 mb-3 line-clamp-2 ${isLarge ? 'text-sm' : 'text-xs'}`}>
               {article.excerpt}
             </p>
           )}
         </div>
         
-        <div className="flex items-center justify-between mt-auto">
-          <button className="inline-flex items-center text-blue-600 font-medium text-sm hover:text-blue-700 transition-colors">
-            Voir l'article
-            <svg className="ml-1 w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
+        <div className="flex justify-center mt-auto">
+          <button className="bg-purple-600 text-white px-4 py-2 rounded-full font-medium text-sm hover:bg-purple-700 transition-colors">
+            Je découvre !
           </button>
-          
-          {article.views && (
-            <span className="text-xs text-gray-500 flex items-center">
-              <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-              </svg>
-              {article.views}
-            </span>
-          )}
         </div>
       </div>
     </div>
@@ -368,7 +301,18 @@ const NavItem = ({ icon, label, active = false, onClick }) => (
     className={`flex flex-col items-center py-2 px-3 cursor-pointer ${active ? 'text-blue-600' : 'text-gray-500'}`}
     onClick={onClick}
   >
-    <span className="text-lg mb-1">{icon}</span>
+    {typeof icon === 'string' && icon.includes('.png') ? (
+      <img 
+        src={icon} 
+        alt={label}
+        className="w-6 h-6 mb-1"
+        onError={(e) => {
+          e.target.src = '/default-nav-icon.png';
+        }}
+      />
+    ) : (
+      <span className="text-lg mb-1">{icon}</span>
+    )}
     <span className="text-xs font-medium">{label}</span>
   </div>
 );

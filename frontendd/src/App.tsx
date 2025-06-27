@@ -11,6 +11,7 @@ import ExerciseDetail from './components/ExerciseDetail.tsx';
 import WelcomePage from './components/Accueil.tsx';
 import { HomePage } from './components/Home.tsx';
 import Profile from './components/Profile.tsx';
+import EditProfile from './components/EditProfile.tsx';
 import { InstallPWA } from './components/InstallPWA.tsx';
 import { OfflineIndicator } from './components/OfflineIndicator.tsx';
 import { usePWA } from './hooks/usePWA.ts';
@@ -48,6 +49,7 @@ export default function App() {
         <Route path="/exercises" element={<Exercises />} />
         <Route path="/exercises/:id" element={<ExerciseDetail />} />
         <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+        <Route path="/edit-profile" element={<ProtectedRoute><EditProfile /></ProtectedRoute>} />
         
         <Route path="*" element={
           <div className="p-8 text-center" role="main">

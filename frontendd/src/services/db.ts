@@ -1,4 +1,4 @@
-import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';
+import { getFirestore, doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
 import { auth } from '../firebaseConfig';
 import type { OnboardingData } from '../components/onboarding/Onboarding';
 
@@ -15,4 +15,10 @@ export async function getUserProfile(): Promise<OnboardingData | null> {
   if (!uid) return null;
   const snap = await getDoc(doc(db, 'users', uid));
   return snap.exists() ? (snap.data() as OnboardingData) : null;
+}
+
+export async function updateUserProfile(data: Partial<OnboardingData>) {
+  const uid = auth.currentUser?.uid;
+  if (!uid) throw new Error("Utilisateur non connecté");
+  await updateDoc(doc(db, 'users', uid), data);
 }

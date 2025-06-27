@@ -6,9 +6,12 @@ import { Avatar, AvatarImage, AvatarFallback } from './Avatar.tsx';
 import { Card, CardHeader, CardContent, CardFooter, CardTitle, CardDescription } from './Card.tsx';
 import { useAccessibility } from '../hooks/useAccessibility.ts';
 import { AccessibilityInfo } from './AccessibilityInfo.tsx';
+import { useNavigate } from 'react-router-dom';
+import logo from '../assets/logo.webp';
 
 export function HomePage() {
   const { announceToScreenReader } = useAccessibility();
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     announceToScreenReader('Page d\'accueil Handy\'s chargée');
@@ -17,43 +20,51 @@ export function HomePage() {
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
       {/* HEADER */}
-      <header className="w-full flex items-center justify-between px-6 py-4 border-b" role="banner">
-        <img src="/logo.webp" alt="Handy's - Logo de l'application" className="h-8 md:h-10" />
-        {/* Desktop nav */}
-        <nav className="hidden md:flex space-x-8 text-base" role="navigation" aria-label="Navigation principale">
-          <a href="#" className="font-medium text-primary" aria-current="page">Accueil</a>
-          <a href="#" className="text-muted-foreground hover:text-primary">Exercices</a>
-          <a href="#" className="text-muted-foreground hover:text-primary">Articles</a>
-        </nav>
-        <div className="flex items-center space-x-4">
-          {/* Search */}
-          <div className="hidden md:block w-64">
-            <Input 
-              variant="rounded" 
-              placeholder="Rechercher un exercice" 
-              aria-label="Rechercher un exercice"
-            />
-          </div>
-          {/* Mobile search icon */}
-          <div className="flex md:hidden">
-            <Button 
-              variant="outline" 
-              size="icon"
-              ariaLabel="Ouvrir la recherche"
-              description="Bouton pour ouvrir la barre de recherche sur mobile"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1012.5 3a7.5 7.5 0 004.15 13.65z" />
-              </svg>
-            </Button>
-          </div>
-          {/* Badge + Avatar */}
-          <div className="flex items-center space-x-2">
-            <Badge variant="destructive" size="sm" aria-label="34 points de motivation">34🔥</Badge>
-            <Avatar>
-              <AvatarImage src="/assets/avatar.png" alt="Photo de profil de l'utilisateur" />
-              <AvatarFallback>U</AvatarFallback>
-            </Avatar>
+      <header className="w-full bg-white border-b" role="banner">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            {/* Logo */}
+            <div className="flex items-center space-x-8">
+              <div className="text-2xl font-bold text-purple-600">
+                <img src={logo} alt="Logo Handy's" className="w-8 h-8" />
+              </div>
+              <nav className="flex space-x-8" role="navigation" aria-label="Navigation principale">
+              <button onClick={() => navigate('/home')} className="text-gray-600 hover:text-purple-600">Accueil</button>
+                  <button onClick={() => navigate('/exercices')} aria-current="page" className="text-purple-600 font-medium">Exercices</button>
+                  <button onClick={() => navigate('/articles')} className="text-gray-600 hover:text-purple-600">Articles</button>
+              </nav>
+            </div>
+            <div className="flex items-center space-x-4">
+              {/* Search */}
+              <div className="hidden md:block w-64">
+                <Input 
+                  variant="rounded" 
+                  placeholder="Rechercher un exercice" 
+                  aria-label="Rechercher un exercice"
+                />
+              </div>
+              {/* Mobile search icon */}
+              <div className="flex md:hidden">
+                <Button 
+                  variant="outline" 
+                  size="icon"
+                  ariaLabel="Ouvrir la recherche"
+                  description="Bouton pour ouvrir la barre de recherche sur mobile"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1012.5 3a7.5 7.5 0 004.15 13.65z" />
+                  </svg>
+                </Button>
+              </div>
+              {/* Badge + Avatar */}
+              <div className="flex items-center space-x-2">
+                <Badge variant="destructive" size="sm" aria-label="34 points de motivation">34🔥</Badge>
+                <Avatar>
+                  <AvatarImage src="/assets/avatar.png" alt="Photo de profil de l'utilisateur" />
+                  <AvatarFallback>U</AvatarFallback>
+                </Avatar>
+              </div>
+            </div>
           </div>
         </div>
       </header>
