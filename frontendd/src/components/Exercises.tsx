@@ -170,17 +170,18 @@ const ExercisesPage = () => {
         <div className="px-4 py-3">
           <div className="flex justify-around">
             <NavItem 
-              icon="/home-icon.png" 
+              icon="home" 
               label="Accueil" 
               onClick={() => navigate('/home')} 
             />
             <NavItem 
-              icon="/exercise-icon.png" 
+              icon="exercise" 
               label="Exercices" 
-              active 
+              active
+              onClick={() => navigate('/exercises')}
             />
             <NavItem 
-              icon="/article-icon.png" 
+              icon="article" 
               label="Articles" 
               onClick={() => navigate('/articles')} 
             />
@@ -247,7 +248,7 @@ const MobileExerciseCard = ({ exercise, onClick }) => {
                 alt={exercise.title}
                 className="w-12 h-12 object-contain"
                 onError={(e) => {
-                  e.target.src = '/default-exercise.jpg';
+                  e.target.src = './assets/exercise-icon.png';
                 }}
               />
             )}
@@ -342,7 +343,7 @@ const DesktopExerciseCard = ({ exercise, onClick }) => {
             alt={exercise.title}
             className="w-16 h-16 object-contain"
             onError={(e) => {
-              e.target.src = '/default-exercise.jpg';
+              e.target.src = './assets/exercise-icon.png';
             }}
           />
         )}
@@ -388,17 +389,20 @@ const NavItem = ({ icon, label, active = false, onClick }) => (
     className={`flex flex-col items-center py-2 px-3 cursor-pointer ${active ? 'text-orange-500' : 'text-gray-500'}`}
     onClick={onClick}
   >
-    {typeof icon === 'string' && icon.includes('.png') ? (
-      <img 
-        src={icon} 
-        alt={label}
-        className="w-6 h-6 mb-1"
-        onError={(e) => {
-          e.target.src = '/default-nav-icon.png';
-        }}
-      />
-    ) : (
-      <span className="text-lg mb-1">{icon}</span>
+    {icon === 'home' && (
+      <svg className="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+      </svg>
+    )}
+    {icon === 'exercise' && (
+      <svg className="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+    )}
+    {icon === 'article' && (
+      <svg className="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      </svg>
     )}
     <span className="text-xs font-medium">{label}</span>
   </div>

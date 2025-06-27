@@ -152,19 +152,20 @@ const ArticlesPage = () => {
           <div className="px-4 py-3">
             <div className="flex justify-around">
               <NavItem 
-                icon="/home-icon.png" 
+                icon={require('../assets/home-icon.png')} 
                 label="Accueil" 
                 onClick={() => navigate('/home')} 
               />
               <NavItem 
-                icon="/exercise-icon.png" 
+                icon={require('../assets/exercise-icon.png')} 
                 label="Exercices" 
                 onClick={() => navigate('/exercises')} 
               />
               <NavItem 
-                icon="/article-icon.png" 
+                icon={require('../assets/article-icon.png')} 
                 label="Articles" 
-                active 
+                active
+                onClick={() => navigate('/articles')}
               />
               <NavItem 
                 icon="👤" 
